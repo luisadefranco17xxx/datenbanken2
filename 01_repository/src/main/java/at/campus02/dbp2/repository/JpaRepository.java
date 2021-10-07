@@ -5,7 +5,7 @@ package at.campus02.dbp2.repository;
         import javax.persistence.EntityManagerFactory;
         import javax.persistence.Persistence;
 
-public class JpaRepository implements CustomerRepository  {
+    public class JpaRepository implements CustomerRepository  {
 
     private EntityManager manager;
 
@@ -24,7 +24,6 @@ public class JpaRepository implements CustomerRepository  {
     @Override
     public Customer read(String email) {
         manager.clear(); //si pulisce PErsistence Contetx(Cache aus, keine managed entiteíe)
-
         return manager.find(Customer.class,email);
     }
 
@@ -37,7 +36,6 @@ public class JpaRepository implements CustomerRepository  {
 
     @Override
     public void delete(Customer customer) {
-
         manager.getTransaction().begin();
         manager.remove(customer);
         manager.getTransaction().commit();
