@@ -15,9 +15,11 @@ public class Application {
 
         log("application started");
 
-        CustomerRepository repository=new JdbcRepository("jdbc:derby:database;create=true");
-//il name é database e lo mette nel sitema , se non esiste lo chrea
+        //CustomerRepository repository=new JdbcRepository("jdbc:derby:database;create=true");
+        CustomerRepository repository=new JpaRepository();
+        //il name é database e lo mette nel sitema , se non esiste lo chrea
 
+        //CustomerRepository repository=new JpaRepository("jdbc:derby:database;create=true");
         Customer customer=new Customer();
         customer.setEmail("customer1@customer.com");
         customer.setLastname("Customer");
@@ -42,6 +44,6 @@ public class Application {
         Customer deleted = repository.read(updated.getEmail());
         log("deleted customer: "+ deleted); //soll null sein
 
-
+        log("customerFromRepository: "+ fromRepository); //soll null sein
     }
 }

@@ -8,7 +8,7 @@
         <!--
         Auflistung der Klassen, die von dieser PersistenceUnit verwaltet werden
         -->
-        <class>at.campus02.dbp2.reposity.Customer</class>
+        <class>at.campus02.dbp2.repository.Customer</class>
 
 
         <properties>
@@ -19,6 +19,7 @@
                       value="jdbc:derby:database;create=true"/>
             <property name="javax.persistence.jdbc.driver"
                       value="org.apache.derby.jdbc.EmbeddedDriver"/>
+
 
             <!--
             Settings des PersistenceProviders sind ebenfalls möglich.
