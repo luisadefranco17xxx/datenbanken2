@@ -5,8 +5,8 @@ import java.util.Map;
 
 public class InMemoryRepository implements  CustomerRepository{
 
-    private Map<String, Customer> storage= new HashMap<>();
-    // static se vogliama usarla in tanti??
+    private final static Map<String, Customer> storage= new HashMap<>();
+    // static se vogliama usarla in tanti non va bene (allora solo oprivat)
 
 
 
