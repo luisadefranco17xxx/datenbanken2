@@ -7,6 +7,35 @@ public class Application {
     }
  //luisva
     public static void main(String[] args) {
+
         log("application started");
+
+        CustomerRepository repository=new InMemoryRepository();
+
+        Customer customer=new Customer();
+        customer.setEmail("customer1@customer.com");
+        customer.setLastname("Customer");
+        customer.setFirstname("Luisa");
+
+        //1)create
+         repository.create(customer) ;
+         log("customer created: "+ customer);
+
+         //2)read
+        Customer fromRepository= repository.read(customer.getEmail());
+        log("Customer read: " + fromRepository);
+
+        //3) Update
+        fromRepository.setFirstname("Maria");
+        repository.update(fromRepository);
+        Customer updated =repository.read(fromRepository.getEmail());
+        log("Customer updated : "+updated);
+
+        //4) Delete
+        repository.delete(updated);
+        Customer deleted = repository.read(updated.getEmail());
+        log("deleted customer: "+ deleted); //soll null sein
+
+
     }
 }
