@@ -1,4 +1,9 @@
+
+
 package at.campus02.dbp2.repository;
+
+
+
 
 public class Application {
 
@@ -10,7 +15,8 @@ public class Application {
 
         log("application started");
 
-        CustomerRepository repository=new InMemoryRepository();
+        CustomerRepository repository=new JdbcRepository("jdbc:derby:database;create=true");
+//il name é database e lo mette nel sitema , se non esiste lo chrea
 
         Customer customer=new Customer();
         customer.setEmail("customer1@customer.com");
