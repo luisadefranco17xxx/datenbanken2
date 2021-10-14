@@ -44,6 +44,5 @@ public class Application {
         Customer deleted = repository.read(updated.getEmail());
         log("deleted customer: "+ deleted); //soll null sein
 
-        log("customerFromRepository: "+ fromRepository); //soll null sein
     }
 }
