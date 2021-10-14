@@ -22,29 +22,26 @@ public class CustomerRepositoryCrudSpec {
 
     //#region test data
     private final String firstname = "Firstname";
-
     private final String lastname = "Lastname";
     private final LocalDate registeredSince = LocalDate.of(2021,10,1);
+    private final AccountType accountType = AccountType.BASIC;
 
     private Customer initDefaultCustomer() {
-        Customer toCreate = new Customer();
-        AccountType accountType = AccountType.BASIC;
+        Customer customer = new Customer();
+        customer.setFirstname(firstname);
+        customer.setLastname(lastname);
+        customer.setAccountType(accountType);
+        customer.setRegisteredSince(registeredSince);
         //LocalDate registeredSince = LocalDate.now();
-
-
-        toCreate.setFirstname(firstname);
-        toCreate.setLastname(lastname);
-        toCreate.setAccountType(accountType);
-        toCreate.setRegisteredSince(registeredSince);
-        return  toCreate;
+        return  customer;
     }
     //#endregion / tear down
 
     //#region setup
 
-    CustomerRepository repository;
-    EntityManagerFactory factory;
-    EntityManager manager;
+    private CustomerRepository repository;
+    private EntityManagerFactory factory;
+    private EntityManager manager;
 
     @BeforeEach   //questa annotazione viene eseguita alínizio di ogni tests
     public  void beforeEach(){
@@ -72,29 +69,19 @@ public class CustomerRepositoryCrudSpec {
     @Test
     public void createPersistCustomerInDatabaseUndReturnsTrue(){
         //given
-        //EntityManagerFactory factory= Persistence.createEntityManagerFactory("persistenceUnitName");
-        //CustomerRepository repository=new CustomerRepositoryJpa(factory);
-        Customer toCreate=initDefaultCustomer();
-        AccountType accountType = AccountType.BASIC;
-        LocalDate registeredSince = LocalDate.now();
+        Customer toCreate=initDefaultCustomer();;
 
-        /*toCreate.setFirstname(firstname);
-        toCreate.setLastname(lastname);
-        toCreate.setAccountType(accountType);
-        toCreate.setRegisteredSince(registeredSince);*/
         //when
         boolean result=  repository.create(toCreate);
+
         //then
         assertTrue(result);
         //Kontrolle aus der Datenbank
-        //EntityManager manager=factory.createEntityManager();   //con questo leggo veramente databanek
-        //manager
         Customer fromDb = manager.find(Customer.class, toCreate.getId()); //appena oggetto toCreate é correttamente creato viene aggiunto automaticamente in ij!!!
         assertEquals(firstname,fromDb.getFirstname());
         assertEquals(lastname,fromDb.getLastname());
         assertEquals(accountType,fromDb.getAccountType());
         assertEquals(registeredSince,fromDb.getRegisteredSince());
-
      }
 
      @Test
@@ -124,9 +111,6 @@ public class CustomerRepositoryCrudSpec {
         manager.persist(existing);
         manager.getTransaction().commit();
 
-
-        AccountType accountType = AccountType.BASIC;
-        LocalDate registeredSince = LocalDate.now();
         //when
         Customer fromRepository=  repository.read(existing.getId());   //lo metto per la seconda volta in Db
         //then
@@ -143,12 +127,13 @@ public class CustomerRepositoryCrudSpec {
     }
 
 
-   @Test
+    @Test
     public void readWithNullAsIdReturnsNull(){
         Customer fromRepository =repository.read(null);
         Assertions.assertNull(fromRepository);
-   }
-//#end region
+    }
+    //#end region
+
     //#region CRUD: update
     @Test
     public void updateChangesAttributesInDatabase(){
@@ -157,20 +142,20 @@ public class CustomerRepositoryCrudSpec {
         manager.getTransaction().begin();;
         manager.persist(existing);
         manager.getTransaction().commit();
-        String changeFirstNAme ="changeFist";
-        String changedLastNAme="changedLast";
+        String changedFirstName ="changedFistName";
+        String changedLastName="changedLastName";
         AccountType changedAcc=AccountType.PREMIUM;
         LocalDate changedregisteredSince = LocalDate.of(2021,10,14);
 
 
-        existing.setFirstname(changeFirstNAme);
-        existing.setLastname(changedLastNAme);
+        existing.setFirstname(changedFirstName);
+        existing.setLastname(changedLastName);
         existing.setAccountType(changedAcc);
-        existing.setRegisteredSince(registeredSince);
+        existing.setRegisteredSince(changedregisteredSince);
         Customer updated =repository.update(existing);
         //then
-        assertEquals(changeFirstNAme,updated.getFirstname());
-        assertEquals(changedLastNAme,updated.getLastname());
+        assertEquals(changedFirstName,updated.getFirstname());
+        assertEquals(changedLastName,updated.getLastname());
         assertEquals(changedAcc,updated.getAccountType());
         assertEquals(changedregisteredSince,updated.getRegisteredSince());
 
@@ -178,8 +163,8 @@ public class CustomerRepositoryCrudSpec {
         //cleas cache to ensure reading from DB again
         manager.clear();
         Customer fromDb =manager.find(Customer.class,updated.getId());
-        assertEquals(changeFirstNAme,fromDb.getFirstname());
-        assertEquals(changedLastNAme,fromDb.getLastname());
+        assertEquals(changedFirstName,fromDb.getFirstname());
+        assertEquals(changedLastName,fromDb.getLastname());
         assertEquals(changedAcc,fromDb.getAccountType());
         assertEquals(changedregisteredSince,fromDb.getRegisteredSince());
 
