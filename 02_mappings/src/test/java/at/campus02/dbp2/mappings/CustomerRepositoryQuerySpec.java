@@ -1,8 +1,10 @@
 package at.campus02.dbp2.mappings;
 
 import org.hamcrest.CoreMatchers;
+import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.hamcrest.collection.IsIterableContainingInOrder;
+import org.hamcrest.core.Is;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -113,7 +115,8 @@ private void setupCommonTestDate(){
                 sortedCustomer                         //confronta le due liste prendendo gli elemente a copppia uno da sopra e uno da sotto
         );*/
         assertThat(sortedCustomer, IsIterableContainingInOrder.contains(customer1, customer2, customer3, customer4, customer5, customer6, customer7));
-    }
+              //InAnyOrder  é l´equivalente se non mi interessa ordine
+}
 
     @Test
     public void  getAllCustomerOnEmptyDatabasReturnsEmptyList(){
@@ -152,4 +155,71 @@ private void setupCommonTestDate(){
         assertThat(premium, Matchers.containsInAnyOrder(customer2, customer3, customer5));
     }
 
+
+    @Test
+    public void findByAccountTypeNullReturnsEmptyList(){
+
+        setupCommonTestDate();
+        List<Customer> result=repository.findByAccountType(null);
+        MatcherAssert.assertThat(result, Is.is(Matchers.empty()));
+
+    }
+    //region Query
+    @Test
+    public void findByLastnameReturnsCaseSensitiveMatchingCustomers(){
+        setupCommonTestDate();
+        List<Customer> matching =repository.findByLastnamePart("orn");
+
+        assertThat(matching, Matchers.contains(customer4,customer7));
+
+    }
+
+    @Test
+    public void findByLastnameReturnsCaseInsensitiveMatchingCustomers(){
+        setupCommonTestDate();
+        List<Customer> matching =repository.findByLastname("eBEr");
+
+        assertThat(matching, Matchers.contains(customer5,customer6));
+
+    }
+
+    @Test
+    public  void  WithNullOrEmptyStringReturnsEmptyList(){
+        setupCommonTestDate();
+        List<Customer> matching =repository.findByLastname("");
+        assertThat(matching, Is.is(Matchers.empty()));
+        matching =repository.findByLastname(null);
+        assertThat(matching, Is.is(Matchers.empty()));
+    }
+
+
+    //#region Query: findAllRegisteredAfter
+
+    @Test
+    public void findAllRegistrdAfrter(){
+        /*setupCommonTestDate();
+        List<Customer> matching =repository.findAllRegisteredAfter(LocalDate.of(2021,4,4));
+        assertThat(matching,Matchers.containsInAnyOrder(customer4,customer5,customer6,customer7));
+
+        matching =repository.findAllRegisteredAfter(LocalDate.of(2021,4,4));
+        assertThat(matching,Matchers.containsInAnyOrder(customer5,customer6,customer7));
+        */
+        // given
+        setupCommonTestDate();
+
+        // when
+        List<Customer> matching = repository.findAllRegisteredAfter(LocalDate.of(2021, 4, 4));
+
+        // then
+        assertThat(matching, Matchers.containsInAnyOrder(customer5, customer6, customer7));
+
+        // and when
+        matching = repository.findAllRegisteredAfter(LocalDate.of(2021, 4, 3));
+
+        // then
+        assertThat(matching, Matchers.containsInAnyOrder(customer4, customer5, customer6, customer7));
+
+
+    }
+    //#end region
 }

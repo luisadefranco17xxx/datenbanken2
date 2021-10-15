@@ -12,6 +12,7 @@ public interface CustomerRepository {
 
     List<Customer> getAllCustomers();
     List<Customer> findByLastname(String lastnamePart);
+    List<Customer> findByLastnamePart(String lastnamePart);
     List<Customer> findByAccountType(AccountType type);
     List<Customer> findAllRegisteredAfter(LocalDate date);
 

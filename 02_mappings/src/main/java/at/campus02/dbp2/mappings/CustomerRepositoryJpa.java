@@ -4,6 +4,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.TypedQuery;
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 
 public class CustomerRepositoryJpa implements CustomerRepository{
@@ -71,11 +72,39 @@ public class CustomerRepositoryJpa implements CustomerRepository{
     }
 
 
+       //togliere
+    public List<Customer> findByLastnamePart(String lastnamePart) {
+        lastnamePart="'%"+lastnamePart+"%'";
+        TypedQuery<Customer> query = manager.createQuery(
+                "SELECT c FROM Customer c " +
+                        "WHERE c.lastname LIKE :LastNameTeil",
+                Customer.class
+        );
+        query.setParameter("LastNameTeil",lastnamePart);
+        return query.getResultList();
+    }
 
     @Override
     public List<Customer> findByLastname(String lastnamePart) {
-        return null;
+        if(lastnamePart ==null|| lastnamePart.isEmpty()){
+            return Collections.emptyList();
+        }
+
+        TypedQuery<Customer> query =manager.createNamedQuery(
+                "Customer.findByLastnamePart",
+                Customer.class
+        );
+        /*TypedQuery<Customer> query = manager.createQuery(
+                "SELECT c FROM Customer c " +
+                        "WHERE lower(c.lastname) like lower(:LastName) " +
+                        "ORDER by c.lastname",
+                Customer.class
+        );
+        */
+        query.setParameter("LastName","%"+lastnamePart+"%");
+        return query.getResultList();
     }
+
 
     @Override
     public List<Customer> findByAccountType(AccountType type) {
@@ -92,6 +121,13 @@ public class CustomerRepositoryJpa implements CustomerRepository{
 
     @Override
     public List<Customer> findAllRegisteredAfter(LocalDate date) {
-        return null;
+
+        TypedQuery<Customer> query = manager.createQuery(
+                "SELECT c FROM Customer c " +
+                        "WHERE c.registeredSince > :registeredAfter",
+                Customer.class
+        );
+        query.setParameter("registeredAfter",date);
+        return query.getResultList();
     }
 }

@@ -4,6 +4,8 @@ import at.campus02.dbp2.mappings.AccountType;
 import at.campus02.dbp2.mappings.Customer;
 import at.campus02.dbp2.mappings.CustomerRepository;
 import at.campus02.dbp2.mappings.CustomerRepositoryJpa;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.core.Is;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,6 +15,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Locale;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -64,6 +67,7 @@ public class CustomerRepositoryCrudSpec {
         boolean result=  repository.create(null);  //prima era null
         //then
         Assertions.assertFalse(result);
+
     }
 
     @Test
@@ -98,9 +102,20 @@ public class CustomerRepositoryCrudSpec {
          boolean result=  repository.create(toCreate);   //lo metto per la seconda volta in Db
          //then
          Assertions.assertFalse(result);
-     }
 
-    //#endregion
+     }
+  @Test
+  public void createCustomerWithNullAsAccountTypeThrowsException(){
+        //ginev
+      Customer notValid =initDefaultCustomer();
+      notValid.setAccountType(null);
+
+      //when
+
+      assertThrows(RuntimeException.class, ()-> repository.create(notValid));
+  }
+
+    //#endregion4
 
     //#region CRUD: read
     @Test
@@ -218,4 +233,6 @@ public class CustomerRepositoryCrudSpec {
         assertFalse(result);
     }
     //end region
+
+
 }
