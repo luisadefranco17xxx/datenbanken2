@@ -12,7 +12,7 @@ public class JdbcRepository implements  CustomerRepository{
     public JdbcRepository(String jdbcUrl) {
         try {
             connection = DriverManager.getConnection(jdbcUrl);
-            ensureTable();  //erzeugen die tabelle wenn nicht existier
+            ensureTable();  //erzeugen die tabelle wenn nicht existiert
         } catch (SQLException throwables) {
             throwables.printStackTrace();
             throw  new IllegalStateException("no database connection: "+throwables);
@@ -46,8 +46,8 @@ public class JdbcRepository implements  CustomerRepository{
             statement.setString(2, customer.getLastname());
             statement.setString(3, customer.getFirstname());
             statement.executeUpdate();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
         }
     }
 
@@ -69,7 +69,7 @@ public class JdbcRepository implements  CustomerRepository{
                 return null;
             }
         } catch (SQLException e) {
-            throw new IllegalStateException("Coult not read customen",e);
+            throw new IllegalStateException("Could not read customer",e);
         }
     }
 
@@ -86,7 +86,7 @@ public class JdbcRepository implements  CustomerRepository{
             statement.setString(3, customer.getEmail());
             statement.executeUpdate();
         } catch (SQLException e) {
-            throw new IllegalStateException("Coult not update customen",e);
+            throw new IllegalStateException("Could not update customer",e);
         }
     }
 
@@ -101,7 +101,7 @@ public class JdbcRepository implements  CustomerRepository{
 
             statement.execute();
         } catch (SQLException e) {
-            throw new IllegalStateException("Coult not delete customen",e);
+            throw new IllegalStateException("Could not delete the customer",e);
         }
     }
 }

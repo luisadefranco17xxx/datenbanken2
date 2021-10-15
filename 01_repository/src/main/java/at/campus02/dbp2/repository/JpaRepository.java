@@ -23,7 +23,7 @@ package at.campus02.dbp2.repository;
 
     @Override
     public Customer read(String email) {
-        manager.clear(); //si pulisce PErsistence Contetx(Cache aus, keine managed entiteíe)
+        manager.clear(); //si pulisce Persistence Contetx(Cache aus, keine managed entiteíe)
         return manager.find(Customer.class,email);
     }
 
