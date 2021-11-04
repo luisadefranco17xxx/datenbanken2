@@ -17,6 +17,7 @@ public class AppointmentRepositoryFactory {
      * @return eine Implementierung von <code>{@link AppointmentRepository}</code>.
      */
     public static AppointmentRepository get(EntityManagerFactory factory) {
-        return null;
+
+        return new AppointmentRepositoryImpl(factory) ;
     }
 }

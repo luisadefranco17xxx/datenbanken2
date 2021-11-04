@@ -1,31 +1,42 @@
 package at.campus02.dbp2.assignment;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.util.Objects;
 
+@Entity
 public class Customer {
+    @Id
+    private String email;
+
+    private String firstname;
+    private String lastname;
 
     public Customer() {
     }
 
     public Customer(String email) {
+        this.email=email;
     }
 
     public String getEmail() {
-        return null;
+        return email;
     }
 
     public String getFirstname() {
-        return null;
+        return firstname;
     }
 
     public void setFirstname(String firstname) {
+        this.firstname=firstname;
     }
 
     public String getLastname() {
-        return null;
+        return lastname;
     }
 
     public void setLastname(String lastname) {
+        this.lastname=lastname;
     }
 
     @Override

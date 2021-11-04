@@ -1,33 +1,48 @@
 package at.campus02.dbp2.assignment;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
-
+@Entity
 public class Appointment {
 
+    @Id
+    @GeneratedValue
+    private Integer id;
+
+    @OneToOne//??
+    private Customer customer;
+    @ManyToOne//??
+    private Provider provider;
+
+    private LocalDateTime date;
+
     public Integer getId() {
-        return null;
+        return id;
     }
 
     public Customer getCustomer() {
-        return null;
+        return customer;
     }
 
     public void setCustomer(Customer customer) {
+        this.customer=customer;
     }
 
     public Provider getProvider() {
-        return null;
+        return provider;
     }
 
     public void setProvider(Provider provider) {
+        this.provider=provider;
     }
 
     public LocalDateTime getTime() {
-        return null;
+        return date;
     }
 
     public void setTime(LocalDateTime time) {
+        this.date=date;
     }
 
     @Override
