@@ -21,6 +21,7 @@ import java.util.List;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 public class CustomerRepositoryQuerySpec {
+    //#region test data and helpers
     private EntityManagerFactory factory;
     private EntityManager manager;
     private CustomerRepository repository;
@@ -101,7 +102,9 @@ private void setupCommonTestDate(){
         if (factory.isOpen())
             factory.close();
     }
+    //#endregion
 
+    //#region Query: getAllCustomer
     @Test
     public void returnAllCustomersFromIdSortedByRegistrationDay(){
         //given
@@ -126,7 +129,9 @@ private void setupCommonTestDate(){
 
         assertThat(sortedCustomer, CoreMatchers.is(Matchers.empty()));
     }
+    //#endregion
 
+    //region findByAccountType
     @Test
     public void findByAccountTypeReturnsMatchingCustomers(){
         setupCommonTestDate();
@@ -145,7 +150,7 @@ private void setupCommonTestDate(){
                     && premium.containsAll(expectedPremium));
 
         assertThat(basic,  Matchers.containsInAnyOrder(customer1,customer4,customer5,customer7));
-*/
+        */
 
         List<Customer> basic = repository.findByAccountType(AccountType.BASIC);
         List<Customer> premium = repository.findByAccountType(AccountType.PREMIUM);
@@ -164,12 +169,14 @@ private void setupCommonTestDate(){
         MatcherAssert.assertThat(result, Is.is(Matchers.empty()));
 
     }
-    //region Query
+    //#endregion
+
+    //region Query findByLastName
     @Test
     public void findByLastnameReturnsCaseSensitiveMatchingCustomers(){
         setupCommonTestDate();
-        List<Customer> matching =repository.findByLastnamePart("orn");
-
+        List<Customer> matching =repository.findByLastname("orn");
+        //List<Customer> matching =repository.findByLastnamePart("orn");
         assertThat(matching, Matchers.contains(customer4,customer7));
 
     }
@@ -191,10 +198,9 @@ private void setupCommonTestDate(){
         matching =repository.findByLastname(null);
         assertThat(matching, Is.is(Matchers.empty()));
     }
-
+    //#endregion
 
     //#region Query: findAllRegisteredAfter
-
     @Test
     public void findAllRegistrdAfrter(){
         /*setupCommonTestDate();
@@ -221,5 +227,5 @@ private void setupCommonTestDate(){
 
 
     }
-    //#end region
+    //#endregion
 }

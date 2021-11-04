@@ -41,7 +41,6 @@ public class CustomerRepositoryCrudSpec {
     //#endregion / tear down
 
     //#region setup
-
     private CustomerRepository repository;
     private EntityManagerFactory factory;
     private EntityManager manager;
@@ -59,15 +58,15 @@ public class CustomerRepositoryCrudSpec {
           if (factory.isOpen())
         factory.close();
     }
+    //endregion
 
-    //#region CRUD
+    //#region CRUD: create
     @Test
     public void createNullAsCustomerReturnFalse(){
         //given
         boolean result=  repository.create(null);  //prima era null
         //then
         Assertions.assertFalse(result);
-
     }
 
     @Test
@@ -102,20 +101,17 @@ public class CustomerRepositoryCrudSpec {
          boolean result=  repository.create(toCreate);   //lo metto per la seconda volta in Db
          //then
          Assertions.assertFalse(result);
-
      }
-  @Test
-  public void createCustomerWithNullAsAccountTypeThrowsException(){
-        //ginev
+
+    @Test
+    public void createCustomerWithNullAsAccountTypeThrowsException(){
+        //given
       Customer notValid =initDefaultCustomer();
       notValid.setAccountType(null);
-
       //when
-
       assertThrows(RuntimeException.class, ()-> repository.create(notValid));
-  }
-
-    //#endregion4
+    }
+    //#endregion
 
     //#region CRUD: read
     @Test
@@ -147,7 +143,7 @@ public class CustomerRepositoryCrudSpec {
         Customer fromRepository =repository.read(null);
         Assertions.assertNull(fromRepository);
     }
-    //#end region
+    //#endregion
 
     //#region CRUD: update
     @Test
@@ -182,57 +178,59 @@ public class CustomerRepositoryCrudSpec {
         assertEquals(changedLastName,fromDb.getLastname());
         assertEquals(changedAcc,fromDb.getAccountType());
         assertEquals(changedregisteredSince,fromDb.getRegisteredSince());
-
     }
 
     @Test
-    public void updatedNotExistingCustomerThrowsIllegalArgumentExeption(){
+    public void updatedNotExistingCustomerThrowsIllegalArgumentException(){
+        //given
         Customer notExisting=initDefaultCustomer();
-        //When
+        //then
         assertThrows(IllegalArgumentException.class, ()-> repository.update(notExisting));
-
     }
 
     @Test
     public void updateWithNullAsCustomerReturnNull(){
         //when
         Customer updated=repository.update(null);
+        //then
         assertNull(updated);
     }
-    //end region
+    //endregion
 
     //#region CRUD: delete
     @Test
-    public void deleteRemoveCutomerFromDatabaseAndReturndTrue(){
+    public void deleteRemoveCustomerFromDatabaseAndReturnTrue(){
+        //given
         Customer existing =initDefaultCustomer();
-
         manager.getTransaction().begin();;
         manager.persist(existing);
         manager.getTransaction().commit();
 
         //when
         boolean result= repository.delete(existing);
+        //then
         assertTrue(result);
         manager.clear();
         Customer hopefullyDeleted= manager.find(Customer.class,existing.getId());
         assertNull(hopefullyDeleted);
-
     }
 
     @Test
-    public void  deleteNotExixstingCustomerThrowsIllegalArgumentExeption(){
+    public void  deleteNotExistingCustomerThrowsIllegalArgumentException(){
+        //given
         Customer notExisting =initDefaultCustomer();
-        //when
+        //then
         assertThrows(IllegalArgumentException.class, ()->repository.delete((notExisting)));
     }
 
     @Test
     public void deleteNullAsCustomerReturnFalse(){
-
+        //when
         boolean result= repository.delete(null);
+        //then
         assertFalse(result);
     }
-    //end region
+    //endregion
 
 
 }

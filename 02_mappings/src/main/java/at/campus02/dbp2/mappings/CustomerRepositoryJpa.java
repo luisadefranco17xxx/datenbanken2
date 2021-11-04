@@ -57,7 +57,6 @@ public class CustomerRepositoryJpa implements CustomerRepository{
         manager.getTransaction().begin();
         manager.remove(manager.merge(customer));
         manager.getTransaction().commit();
-
         return true;
     }
 
@@ -74,10 +73,11 @@ public class CustomerRepositoryJpa implements CustomerRepository{
 
        //togliere
     public List<Customer> findByLastnamePart(String lastnamePart) {
-        lastnamePart="'%"+lastnamePart+"%'";
+        lastnamePart="%"+lastnamePart+"%";
         TypedQuery<Customer> query = manager.createQuery(
                 "SELECT c FROM Customer c " +
-                        "WHERE c.lastname LIKE :LastNameTeil",
+                        "WHERE c.lastname LIKE :LastNameTeil " +
+                        "ORDER by c.lastname",
                 Customer.class
         );
         query.setParameter("LastNameTeil",lastnamePart);

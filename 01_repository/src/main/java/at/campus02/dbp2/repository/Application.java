@@ -34,17 +34,26 @@ public class Application {
          repository.create(customer) ;
          log("customer created: "+ customer);
         repository.create(customer2) ;
-        log("customer created: "+ customer);
+        log("customer created: "+ customer2);
 
          //2)read
         Customer fromRepository= repository.read(customer.getEmail());
         log("Customer read: " + fromRepository);
+
+        Customer fromRepository2= repository.read(customer2.getEmail());
+        log("Customer read: " + fromRepository2);
 
         //3) Update
         fromRepository.setFirstname("Maria");
         repository.update(fromRepository);
         Customer updated =repository.read(fromRepository.getEmail());
         log("Customer updated : "+updated);
+
+        fromRepository2.setFirstname("Maria2");
+        repository.update(fromRepository2);
+        Customer updated2 =repository.read(fromRepository2.getEmail());
+        log("Customer updated : "+updated2);
+
 
        //4) Delete
         repository.delete(updated);
