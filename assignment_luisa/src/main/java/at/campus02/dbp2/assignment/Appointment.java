@@ -1,8 +1,10 @@
 package at.campus02.dbp2.assignment;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
+
 @Entity
 public class Appointment {
 
@@ -10,12 +12,15 @@ public class Appointment {
     @GeneratedValue
     private Integer id;
 
-    @OneToOne//??
+    @ManyToOne //cancellare?? doppione qui sbagliato
     private Customer customer;
-    @ManyToOne//??
+    @ManyToOne(cascade = CascadeType.MERGE)      //Paulina(prima manyToOne vuoto)
     private Provider provider;
 
     private LocalDateTime date;
+
+    public Appointment() {
+    }
 
     public Integer getId() {
         return id;
@@ -26,7 +31,7 @@ public class Appointment {
     }
 
     public void setCustomer(Customer customer) {
-        this.customer=customer;
+        this.customer = customer;
     }
 
     public Provider getProvider() {
@@ -34,7 +39,7 @@ public class Appointment {
     }
 
     public void setProvider(Provider provider) {
-        this.provider=provider;
+        this.provider = provider;
     }
 
     public LocalDateTime getTime() {
@@ -42,7 +47,7 @@ public class Appointment {
     }
 
     public void setTime(LocalDateTime time) {
-        this.date=date;
+        this.date = time;
     }
 
     @Override
@@ -57,5 +62,6 @@ public class Appointment {
     public int hashCode() {
         return Objects.hash(getId(), getTime(), getCustomer(), getProvider());
     }
+
 
 }

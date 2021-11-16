@@ -1,7 +1,6 @@
 package at.campus02.dbp2.assignment;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
@@ -11,6 +10,8 @@ public class Customer {
 
     private String firstname;
     private String lastname;
+    //@OneToOne  (mappedBy ="customer", cascade= CascadeType.ALL)  //new vedere ???
+    //private  Appointment appointment;
 
     public Customer() {
     }
@@ -38,6 +39,14 @@ public class Customer {
     public void setLastname(String lastname) {
         this.lastname=lastname;
     }
+
+    //public Appointment getAppointment() {
+    //    return appointment;
+   // }
+
+    //public void setAppointment(Appointment appointment) {
+    //    this.appointment = appointment;
+    //}
 
     @Override
     public boolean equals(Object o) {
